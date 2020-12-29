@@ -26,7 +26,7 @@ verify-x509-name "{{ item.remote_user }}@{{ item.remote_name }}" name
 {% endif %}
 tls-version-min 1.2
 key-direction 1
-verb 3
+verb {{ openvpn_client_verbosity }}
 
 {% if item.tls_auth is defined and item.tls_auth|length %}
 <tls-auth>

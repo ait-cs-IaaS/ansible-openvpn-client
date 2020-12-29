@@ -10,4 +10,5 @@ openvpn_client_config_dir: "/home/{{ openvpn_client_user }}/.openvpn"
 
 
 openvpn_client_cipher: "AES-256-CBC"
+openvpn_client_verbosity: 3
 openvpn_client_configs: []
