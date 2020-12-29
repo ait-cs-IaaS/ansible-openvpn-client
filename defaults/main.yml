@@ -1,0 +1,13 @@
+---
+# defaults file for openvpn-client
+
+openvpn_client_config_template: client.ovpn.j2
+
+
+openvpn_client_user: "{{ ansible_user }}"
+openvpn_client_group: "{{ ansible_user }}"
+openvpn_client_config_dir: "/home/{{ openvpn_client_user }}/.openvpn"
+
+
+openvpn_client_cipher: "AES-256-CBC"
+openvpn_client_configs: []

@@ -1,0 +1,48 @@
+client
+
+{% for instance in item.instances %}
+remote {{ item.remote if instance.remote is not defined else  instance.remote }} {{ instance.port }} {{ instance.proto }}
+
+{% if instance.client_extra_options is defined %}
+{% for item in instance.client_extra_options %}
+{{ item }}
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+
+dev tun
+cipher {{ openvpn_client_cipher if item.cipher is not defined else item.cipher }}
+{% if item.auth_digest is defined and item.auth_digest|length %}
+auth {{ item.auth_digest }}
+{% endif %}
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+remote-cert-tls server
+{% if item.verify_name is defined and item.verify_name|bool %}
+verify-x509-name "{{ item.remote_user }}@{{ item.remote_name }}" name
+{% endif %}
+tls-version-min 1.2
+comp-lzo
+key-direction 1
+verb 3
+
+{% if item.tls_auth is defined and item.tls_auth|length %}
+<tls-auth>
+{{ item.tls_auth }}
+</tls-auth>
+{% endif %}
+
+<ca>
+{{ openvpn_client_ca if item.ca is not defined else item.ca }}
+</ca>
+
+<cert>
+{{ item.cert }}
+</cert>
+
+<key>
+{{ item.key }}
+</key>

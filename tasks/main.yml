@@ -1,0 +1,26 @@
+---
+# tasks file for openvpn-client
+
+- name: Install openvpn
+  become: yes
+  apt:
+    name: openvpn
+    state: present
+
+
+- name: Ensure OpenVPN config directories exists
+  file:
+    name: "{{ openvpn_client_config_dir if item.config_dir is not defined else item.config_dir }}"
+    owner: "{{ openvpn_client_user if item.user is not defined else item.user }}"
+    group: "{{ openvpn_client_group if item.group is not defined else item.group }}"
+    state: directory
+  loop: "{{ openvpn_client_configs }}"
+
+- name: Create OpenVPN configs
+  template:
+    src: "{{ openvpn_client_config_template }}"
+    dest: "{{ openvpn_client_config_dir if item.config_dir is not defined else item.config_dir }}/{{ item.name }}.ovpn"
+    owner: "{{ openvpn_client_user if item.user is not defined else item.user }}"
+    group: "{{ openvpn_client_group if item.group is not defined else item.group }}"
+    mode: "0600"
+  loop: "{{ openvpn_client_configs }}"
